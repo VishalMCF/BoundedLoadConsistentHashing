@@ -15,10 +15,10 @@ public class ConsistentConfig {
     private Hasher hasher;
 
     @Setter
-    private int partitionCount;
+    private long partitionCount;
 
     @Setter
-    private int replicationFactor;
+    private long replicationFactor;
 
     @Setter
     private double load;
