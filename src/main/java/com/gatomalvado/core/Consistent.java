@@ -37,8 +37,6 @@ public class Consistent {
     private Map<String, Member> members;        // will add its significance
     private Map<Long, Member> partitions;    // will add its significance
     private Map<Long, Member> ring;
-
-    @Getter
     private static Consistent instance;
 
     private Consistent(ConsistentConfig config, List<Member> memberList) {
@@ -64,8 +62,15 @@ public class Consistent {
         this.ring = new ConcurrentHashMap<>();
         this.sortedSet = new ConcurrentSkipListSet<>();
         this.loads = new ConcurrentHashMap<>();
+        this.hasher = this.config.getHasher();
 
-        distributePartitions();
+        // add the members one by one to the hashtring
+        for (Member member : memberList) {
+            addMember(member);
+        }
+        if(members != null && members.size() > 0) {
+            distributePartitions();
+        }
     }
 
     // method:- distributePartitions
@@ -74,8 +79,8 @@ public class Consistent {
      * What does the below method does exactly?
      */
     private void distributePartitions() {
-        Map<String, Double> loads = new HashMap<>();
-        Map<Integer, Member> partitions = new HashMap<>();
+        Map<String, Long> loads = new ConcurrentHashMap<>();
+        Map<Long, Member> partitions = new ConcurrentHashMap<>();
 
         ByteBuffer buffer = ByteBuffer.allocate(8);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -87,16 +92,21 @@ public class Consistent {
                 index = 0L;
             }
             distributeWithLoad(i, index, loads, partitions);
+            buffer.clear();
         }
+
+        this.loads = loads;
+        this.partitions = partitions;
     }
 
     /**
      * whatever index I have received for the partitionId that needs to be allocated to some member and the load of the member needs to updated
-     *
-     * @param index
      * @param partitionId
+     * @param keyHash
+     * @param loads
+     * @param partitions
      */
-    public void distributeWithLoad(long partitionId, long index) {
+    public void distributeWithLoad(long partitionId, Long keyHash, Map<String, Long> loads, Map<Long, Member> partitions) {
         // calculate the average load
         double avgLoad = getAverageLoad();
 
@@ -109,25 +119,26 @@ public class Consistent {
                 throw new RuntimeException("not enough room to distribute partitions");
             }
 
-            Member member = this.partitions.get(partitionId);
+            Member member = this.ring.get(keyHash);
             if (member == null) {
-                throw new RuntimeException("member not found while doing load distribution for index -> " + index);
+                throw new RuntimeException("member not found while doing load distribution for index -> " + keyHash);
             }
 
             // check the load
-            Long loadOnTheMember = this.loads.get(member.convertToString());
+            Long loadOnTheMember = loads.getOrDefault(member.convertToString(), 0L);
 
             // if load is within the limit then assign that partition to the member
             if (loadOnTheMember + 1L <= avgLoad) {
-                this.partitions.put(partitionId, member);
-                this.loads.put(member.convertToString(), loadOnTheMember + 1L);
+                partitions.put(partitionId, member);
+                loads.put(member.convertToString(), loadOnTheMember + 1L);
                 return;
             }
 
             // if the load is greater, then move on to find some other member
-            index++;
-            if (index >= this.sortedSet.size()) {
-                index = 0;
+            keyHash = sortedSet.higher(keyHash);
+
+            if(keyHash == null){
+                keyHash = sortedSet.first();
             }
         }
     }
@@ -136,8 +147,11 @@ public class Consistent {
      * @param config
      * @param memberList
      */
-    public static synchronized void INIT(ConsistentConfig config, List<Member> memberList) {
-        instance = new Consistent(config, memberList);
+    public static synchronized Consistent getInstance(ConsistentConfig config, List<Member> memberList) {
+        if(instance == null) {
+            instance = new Consistent(config, memberList);
+        }
+        return instance;
     }
 
     /**
@@ -187,8 +201,8 @@ public class Consistent {
             ByteBuffer buffer = ByteBuffer.wrap(nameInBytes);
             buffer.order(ByteOrder.LITTLE_ENDIAN);
             long partitionHash = hasher.convertByteToHash(buffer);
-            ring.put(partitionHash, member);
-            sortedSet.add(partitionHash);
+            this.ring.put(partitionHash, member);
+            this.sortedSet.add(partitionHash);
         }
         members.put(member.convertToString(), member);
     }
@@ -206,6 +220,18 @@ public class Consistent {
             distributePartitions();
         } finally {
             writeLock.unlock();
+        }
+    }
+
+    public Member getPartitionOwner(int partitionId) {
+        readLock.lock();
+        try{
+            if(!this.partitions.containsKey(partitionId)) {
+                throw new RuntimeException("partition not found while finding owner of the partitionId -> " + partitionId);
+            }
+            return this.partitions.get(partitionId);
+        } finally {
+            readLock.unlock();
         }
     }
 
