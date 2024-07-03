@@ -1,6 +1,6 @@
 import java.util.random.RandomGenerator;
 
-import com.gatomalvado.contracts.Member;
+import com.gatomalvado.consistent.contracts.Member;
 
 import lombok.Getter;
 

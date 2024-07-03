@@ -1,21 +1,19 @@
-package com.gatomalvado.core;
+package com.gatomalvado.consistent.core;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import com.gatomalvado.common.Constants;
-import com.gatomalvado.config.ConsistentConfig;
-import com.gatomalvado.contracts.Hasher;
-import com.gatomalvado.contracts.Member;
+import com.gatomalvado.consistent.common.Constants;
+import com.gatomalvado.consistent.config.ConsistentConfig;
+import com.gatomalvado.consistent.contracts.Hasher;
+import com.gatomalvado.consistent.contracts.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +35,8 @@ public class Consistent {
     private Map<String, Member> members;        // will add its significance
     private Map<Long, Member> partitions;    // will add its significance
     private Map<Long, Member> ring;
+
+    @Getter
     private static Consistent instance;
 
     private Consistent(ConsistentConfig config, List<Member> memberList) {
@@ -84,7 +84,7 @@ public class Consistent {
 
         ByteBuffer buffer = ByteBuffer.allocate(8);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
-        for (long i = 0; i < config.getPartitionCount(); i++) {
+        for (long i = 1; i <= config.getPartitionCount(); i++) {
             buffer.putLong(i);
             long partitionHash = hasher.convertByteToHash(buffer);
             Long index = sortedSet.ceiling(partitionHash);
@@ -147,7 +147,7 @@ public class Consistent {
      * @param config
      * @param memberList
      */
-    public static synchronized Consistent getInstance(ConsistentConfig config, List<Member> memberList) {
+    public static synchronized Consistent init(ConsistentConfig config, List<Member> memberList) {
         if(instance == null) {
             instance = new Consistent(config, memberList);
         }
@@ -226,10 +226,10 @@ public class Consistent {
     public Member getPartitionOwner(int partitionId) {
         readLock.lock();
         try{
-            if(!this.partitions.containsKey(partitionId)) {
+            if(!this.partitions.containsKey(Long.valueOf(partitionId))) {
                 throw new RuntimeException("partition not found while finding owner of the partitionId -> " + partitionId);
             }
-            return this.partitions.get(partitionId);
+            return this.partitions.get(Long.valueOf(partitionId));
         } finally {
             readLock.unlock();
         }

@@ -1,4 +1,4 @@
-package com.gatomalvado.exception;
+package com.gatomalvado.consistent.exception;
 
 public class InsufficientMemberException extends RuntimeException {
 

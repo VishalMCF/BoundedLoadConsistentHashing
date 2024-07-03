@@ -1,4 +1,4 @@
-package com.gatomalvado.contracts;
+package com.gatomalvado.consistent.contracts;
 
 public interface Member {
     String convertToString();
