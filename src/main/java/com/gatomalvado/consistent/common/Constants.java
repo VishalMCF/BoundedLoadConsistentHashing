@@ -1,4 +1,4 @@
-package com.gatomalvado.common;
+package com.gatomalvado.consistent.common;
 
 public class Constants {
 

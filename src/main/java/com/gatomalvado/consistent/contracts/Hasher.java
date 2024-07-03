@@ -1,4 +1,4 @@
-package com.gatomalvado.contracts;
+package com.gatomalvado.consistent.contracts;
 
 import java.nio.ByteBuffer;
 

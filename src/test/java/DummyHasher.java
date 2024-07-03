@@ -1,6 +1,6 @@
 import java.nio.ByteBuffer;
 
-import com.gatomalvado.contracts.Hasher;
+import com.gatomalvado.consistent.contracts.Hasher;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 

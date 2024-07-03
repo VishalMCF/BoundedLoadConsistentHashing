@@ -1,17 +1,14 @@
-package com.gatomalvado.config;
+package com.gatomalvado.consistent.config;
 
-import com.gatomalvado.contracts.Hasher;
+import com.gatomalvado.consistent.contracts.Hasher;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class ConsistentConfig {
 
