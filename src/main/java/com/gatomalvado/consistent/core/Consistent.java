@@ -223,7 +223,12 @@ public class Consistent {
         }
     }
 
-    public Member getPartitionOwner(int partitionId) {
+    /**
+     *
+     * @param partitionId
+     * @return
+     */
+    public Member getPartitionOwner(long partitionId) {
         readLock.lock();
         try{
             if(!this.partitions.containsKey(Long.valueOf(partitionId))) {
@@ -235,4 +240,14 @@ public class Consistent {
         }
     }
 
+    public Member locateKey(ByteBuffer key) {
+        long partId = findPartitonId(key);
+        return getPartitionOwner(partId);
+    }
+
+    public long findPartitonId(ByteBuffer key) {
+        long hashedKey = hasher.convertByteToHash(key);
+        var val = ((hashedKey)%(config.getPartitionCount()));
+        return (val < 0 ? -1*val : val);
+    }
 }

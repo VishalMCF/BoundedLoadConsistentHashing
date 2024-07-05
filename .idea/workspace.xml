@@ -5,26 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8250478c-930f-402e-9a8e-95b9a0183f34" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/BloundedLoadConsistentHashApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/common/MapperUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/controller/Controller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/dto/ConsistentCreateDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/dto/ConsistentDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/dto/MemberResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/dto/Members.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/READEME.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/dto/request/LocationRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/dto/response/KeyMemberDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/common/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/consistent/common/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/config/ConsistentConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/consistent/config/ConsistentConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/contracts/Hasher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/consistent/contracts/Hasher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/contracts/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/consistent/contracts/Member.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/core/Consistent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/consistent/core/Consistent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/exception/InsufficientMemberException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/consistent/exception/InsufficientMemberException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/common/MapperUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/common/MapperUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/consistent/core/Consistent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/consistent/core/Consistent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/dto/ConsistentCreateDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/dto/request/ConsistentCreateDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/dto/ConsistentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gatomalvado/web/dto/response/ConsistentDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ConsistentTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ConsistentTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/DummyHasher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/DummyHasher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/DummyNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/DummyNode.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,8 +63,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
+    "JUnit.ConsistentTest.executor": "Run",
     "JUnit.ConsistentTest.test_the_assignment_of_partition_to_the_members.executor": "Debug",
     "JUnit.ConsistentTest.test_the_creation_of_the_consistent_object_with_provided_config.executor": "Debug",
+    "JUnit.ConsistentTest.test_the_location_of_the_key_among_the_partition.executor": "Debug",
     "Maven.BoundedLoadConsistentHashing [clean...].executor": "Run",
     "Maven.BoundedLoadConsistentHashing [clean].executor": "Run",
     "Maven.BoundedLoadConsistentHashing [install].executor": "Run",
@@ -89,7 +83,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.BloundedLoadConsistentHashApplication.executor": "Debug",
     "Spring Boot.Main.executor": "Run",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "frontend-integration",
     "go.import.settings.migrated": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/vishalyadav/IdeaProjects/BoundedLoadConsistentHashing/src/main",
@@ -178,6 +172,15 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
+    <configuration name="ConsistentTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="BoundedLoadConsistentHashing" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ConsistentTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ConsistentTest.test_the_assignment_of_partition_to_the_members" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="BoundedLoadConsistentHashing" />
       <option name="PACKAGE_NAME" value="" />
@@ -188,11 +191,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ConsistentTest.test_the_creation_of_the_consistent_object_with_provided_config" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ConsistentTest.test_the_location_of_the_key_among_the_partition" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="BoundedLoadConsistentHashing" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="ConsistentTest" />
-      <option name="METHOD_NAME" value="test_the_creation_of_the_consistent_object_with_provided_config" />
+      <option name="METHOD_NAME" value="test_the_location_of_the_key_among_the_partition" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -214,9 +217,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Spring Boot.BloundedLoadConsistentHashApplication" />
+        <item itemvalue="JUnit.ConsistentTest" />
+        <item itemvalue="JUnit.ConsistentTest.test_the_location_of_the_key_among_the_partition" />
         <item itemvalue="JUnit.ConsistentTest.test_the_assignment_of_partition_to_the_members" />
         <item itemvalue="Application.BloundedLoadConsistentHashApplication" />
-        <item itemvalue="JUnit.ConsistentTest.test_the_creation_of_the_consistent_object_with_provided_config" />
       </list>
     </recent_temporary>
   </component>
@@ -237,7 +241,8 @@
       <updated>1719298967167</updated>
       <workItem from="1719298968394" duration="2002000" />
       <workItem from="1719909412200" duration="12321000" />
-      <workItem from="1720005572798" duration="7408000" />
+      <workItem from="1720005572798" duration="10472000" />
+      <workItem from="1720182489196" duration="4730000" />
     </task>
     <servers />
   </component>
@@ -253,18 +258,21 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/gatomalvado/web/controller/Controller.java</url>
-          <line>19</line>
-          <option name="timeStamp" value="33" />
+          <line>43</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/gatomalvado/web/controller/Controller.java</url>
-          <line>20</line>
-          <option name="timeStamp" value="34" />
+          <line>44</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/gatomalvado/web/controller/Controller.java</url>
-          <line>21</line>
-          <option name="timeStamp" value="35" />
+          <line>46</line>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

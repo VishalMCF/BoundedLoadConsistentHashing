@@ -2,11 +2,13 @@ package com.gatomalvado.common;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.gatomalvado.consistent.contracts.Member;
 import com.gatomalvado.consistent.core.Consistent;
-import com.gatomalvado.web.dto.ConsistentDTO;
+import com.gatomalvado.web.dto.response.ConsistentDTO;
 import com.gatomalvado.web.dto.MemberResponse;
 import com.gatomalvado.web.dto.Members;
 
@@ -27,14 +29,18 @@ public class MapperUtils {
         return new MemberResponse(member.convertToString());
     }
 
-    public static Map<Long, MemberResponse> convertPartitionsMap(Map<Long, Member> memberMap) {
-        Map<Long, MemberResponse> memberResponseMap = new HashMap<>();
-        for (Map.Entry<Long, Member> entry : memberMap.entrySet()) {
-            Long key = entry.getKey();
+    public static <T> Map<T, MemberResponse> convertPartitionsMap(Map<T, Member> memberMap) {
+        Map<T, MemberResponse> memberResponseMap = new HashMap<>();
+        for (Map.Entry<T, Member> entry : memberMap.entrySet()) {
+            T key = entry.getKey();
             Member member = entry.getValue();
             MemberResponse memberResponse = MapperUtils.createMemberResponse(member);
             memberResponseMap.put(key, memberResponse);
         }
         return memberResponseMap;
+    }
+
+    public static List<Map<String, MemberResponse>> createKeyToMemberMapping(List<Map<String, Member>> members) {
+        return members.stream().map(MapperUtils::convertPartitionsMap).collect(Collectors.toUnmodifiableList());
     }
 }
