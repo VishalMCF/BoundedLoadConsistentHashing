@@ -1,14 +1,13 @@
-package com.gatomalvado.web.dto;
+package com.gatomalvado.web.dto.response;
 
 import java.util.Map;
 
-import com.gatomalvado.consistent.contracts.Member;
+import com.gatomalvado.web.dto.MemberResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @Builder

@@ -1,4 +1,5 @@
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 import com.gatomalvado.consistent.contracts.Hasher;
 import com.google.common.hash.HashFunction;
@@ -9,6 +10,7 @@ public class DummyHasher implements Hasher {
     @Override
     public long convertByteToHash(ByteBuffer buffer) {
         HashFunction hashFunction = Hashing.murmur3_128();
-        return hashFunction.hashBytes(buffer.array()).asLong();
+        long hash = hashFunction.hashBytes(buffer.array()).asLong();
+        return hash;
     }
 }

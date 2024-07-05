@@ -1,6 +1,5 @@
-package com.gatomalvado.web.dto;
+package com.gatomalvado.web.dto.request;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -8,6 +7,7 @@ import java.util.stream.Collectors;
 import com.gatomalvado.common.MapperUtils;
 import com.gatomalvado.consistent.config.ConsistentConfig;
 import com.gatomalvado.consistent.contracts.Member;
+import com.gatomalvado.web.dto.Members;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
