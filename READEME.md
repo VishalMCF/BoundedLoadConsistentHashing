@@ -1,6 +1,6 @@
 # Partition Map Visualization
 
-## Request
+## Request A)
 ```json
 "partitionCount": 360,
 "replicationFactor": 20,
@@ -31,7 +31,7 @@
 }
 ]
 ```
-## Response
+### Response
 ```json
 {
   "partitionMap": {
@@ -60,7 +60,7 @@
 }
 ```
 
-## Request 
+### Request B)
 
 ```cgo
 curl --location 'localhost:8080/location' \
@@ -75,7 +75,7 @@ curl --location 'localhost:8080/location' \
 }
 '
 ```
-## Response
+### Response
 ```json
 [
     {
