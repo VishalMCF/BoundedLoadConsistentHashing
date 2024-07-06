@@ -5,6 +5,8 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.locks.Lock;
@@ -26,10 +28,10 @@ public class Consistent {
 
     private ReentrantReadWriteLock reentrantRWLock = new ReentrantReadWriteLock();
     private Lock readLock = reentrantRWLock.readLock();
-    private Lock writeLock = reentrantRWLock.readLock();
+    private Lock writeLock = reentrantRWLock.writeLock();
     private ConsistentConfig config;
     private Hasher hasher;
-    private ConcurrentSkipListSet<Long> sortedSet;                // this will be renamed based upon the use and significance
+    private TreeSet<Long> sortedSet;                // this will be renamed based upon the use and significance
     private long partitionCount;                // will add its significance in the comment
     private Map<String, Long> loads;          // will add its significance
     private Map<String, Member> members;        // will add its significance
@@ -39,37 +41,39 @@ public class Consistent {
     @Getter
     private static Consistent instance;
 
-    private Consistent(ConsistentConfig config, List<Member> memberList) {
-        if (config.getHasher() == null) {
-            throw new RuntimeException("Hasher object can't be passed as null");
-        }
+    public Consistent(ConsistentConfig config, List<Member> memberList) {
+        synchronized (writeLock){
+            if (config.getHasher() == null) {
+                throw new RuntimeException("Hasher object can't be passed as null");
+            }
 
-        if (config.getPartitionCount() == 0) {
-            config.setPartitionCount(Constants.DEFAULT_PARTITION_COUNT);
-        }
+            if (config.getPartitionCount() == 0) {
+                config.setPartitionCount(Constants.DEFAULT_PARTITION_COUNT);
+            }
 
-        if (config.getReplicationFactor() == 0) {
-            config.setReplicationFactor(Constants.DEFAULT_REPLICATION_FACTOR);
-        }
+            if (config.getReplicationFactor() == 0) {
+                config.setReplicationFactor(Constants.DEFAULT_REPLICATION_FACTOR);
+            }
 
-        if (config.getLoad() == 0.0) {
-            config.setLoad(Constants.DEFAULT_LOAD);
-        }
+            if (config.getLoad() == 0.0) {
+                config.setLoad(Constants.DEFAULT_LOAD);
+            }
 
-        this.config = config;
-        this.members = new ConcurrentHashMap<>();
-        this.partitions = new ConcurrentHashMap<>();
-        this.ring = new ConcurrentHashMap<>();
-        this.sortedSet = new ConcurrentSkipListSet<>();
-        this.loads = new ConcurrentHashMap<>();
-        this.hasher = this.config.getHasher();
+            this.config = config;
+            this.members = new ConcurrentHashMap<>();
+            this.partitions = new ConcurrentHashMap<>();
+            this.ring = new ConcurrentHashMap<>();
+            this.sortedSet = new TreeSet<>();
+            this.loads = new ConcurrentHashMap<>();
+            this.hasher = this.config.getHasher();
 
-        // add the members one by one to the hashtring
-        for (Member member : memberList) {
-            addMember(member);
-        }
-        if(members != null && members.size() > 0) {
-            distributePartitions();
+            // add the members one by one to the hashtring
+            for (Member member : memberList) {
+                addMember(member);
+            }
+            if (members != null && members.size() > 0) {
+                distributePartitions();
+            }
         }
     }
 
@@ -89,7 +93,7 @@ public class Consistent {
             long partitionHash = hasher.convertByteToHash(buffer);
             Long index = sortedSet.ceiling(partitionHash);
             if (index == null) {
-                index = 0L;
+                index = sortedSet.first();
             }
             distributeWithLoad(i, index, loads, partitions);
             buffer.clear();
@@ -101,6 +105,7 @@ public class Consistent {
 
     /**
      * whatever index I have received for the partitionId that needs to be allocated to some member and the load of the member needs to updated
+     *
      * @param partitionId
      * @param keyHash
      * @param loads
@@ -137,21 +142,10 @@ public class Consistent {
             // if the load is greater, then move on to find some other member
             keyHash = sortedSet.higher(keyHash);
 
-            if(keyHash == null){
+            if (keyHash == null) {
                 keyHash = sortedSet.first();
             }
         }
-    }
-
-    /**
-     * @param config
-     * @param memberList
-     */
-    public static synchronized Consistent init(ConsistentConfig config, List<Member> memberList) {
-        if(instance == null) {
-            instance = new Consistent(config, memberList);
-        }
-        return instance;
     }
 
     /**
@@ -224,19 +218,18 @@ public class Consistent {
     }
 
     /**
-     *
      * @param partitionId
      * @return
      */
     public Member getPartitionOwner(long partitionId) {
-        readLock.lock();
-        try{
-            if(!this.partitions.containsKey(Long.valueOf(partitionId))) {
+        writeLock.lock();
+        try {
+            if (!this.partitions.containsKey(Long.valueOf(partitionId))) {
                 throw new RuntimeException("partition not found while finding owner of the partitionId -> " + partitionId);
             }
             return this.partitions.get(Long.valueOf(partitionId));
         } finally {
-            readLock.unlock();
+            writeLock.unlock();
         }
     }
 
@@ -247,7 +240,25 @@ public class Consistent {
 
     public long findPartitonId(ByteBuffer key) {
         long hashedKey = hasher.convertByteToHash(key);
-        var val = ((hashedKey)%(config.getPartitionCount()));
-        return (val < 0 ? -1*val : val);
+        var val = ((hashedKey) % (config.getPartitionCount()));
+        return (val < 0 ? -1 * val : val);
+    }
+
+    public void remove(String name){
+        writeLock.lock();
+        try{
+            if(!members.containsKey(name)){
+                return;
+            }
+            for(int i=0; i<config.getReplicationFactor(); i++){
+                long hash = hasher.convertByteToHash(ByteBuffer.wrap((name+"_"+(i+1)).getBytes()));
+                this.ring.remove(hash);
+                this.sortedSet.remove(hash);
+            }
+            members.remove(name);
+            distributePartitions();
+        } finally {
+            writeLock.unlock();
+        }
     }
 }

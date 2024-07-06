@@ -27,7 +27,7 @@ public class Controller {
 
     @PostMapping("/")
     public ResponseEntity<ConsistentDTO> createConsistent(@RequestBody ConsistentCreateDTO configDTO) {
-        Consistent consistent = Consistent.init(configDTO.getConfigDetails(), configDTO.getMemberDetails());
+        Consistent consistent = new Consistent(configDTO.getConfigDetails(), configDTO.getMemberDetails());
         ConsistentDTO dto = MapperUtils.createConsistentFrom(consistent);
         return ResponseEntity.ok(dto);
     }

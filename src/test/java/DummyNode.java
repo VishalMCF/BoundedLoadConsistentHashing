@@ -21,4 +21,9 @@ public class DummyNode implements Member {
     public String convertToString() {
         return this.host+":"+this.port;
     }
+
+    @Override
+    public String toString() {
+        return this.host+":"+this.port;
+    }
 }
