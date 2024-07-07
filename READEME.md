@@ -1,7 +1,7 @@
 # Partition Map Visualization
 
 ## Request A)
-```json
+```
 curl --location 'localhost:8080' \
 --header 'Content-Type: application/json' \
 --data '{
