@@ -3,11 +3,15 @@ import * as d3 from "d3";
 
 const SunburstChart = ({ data }) => {
   const chartRef = useRef();
+  console.log('data', data);
 
   useEffect(() => {
     const width = 928;
     const height = width;
     const radius = width / 6;
+
+    const svg = d3.select(chartRef.current);
+    svg.selectAll("*").remove();  // Clear previous contents
 
     const color = d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
 
@@ -27,8 +31,7 @@ const SunburstChart = ({ data }) => {
       .innerRadius(d => d.y0 * radius)
       .outerRadius(d => Math.max(d.y0 * radius, d.y1 * radius - 1));
 
-    const svg = d3.select(chartRef.current)
-      .attr("viewBox", [-width / 2, -height / 2, width, width])
+    svg.attr("viewBox", [-width / 2, -height / 2, width, width])
       .style("font", "10px sans-serif");
 
     const path = svg.append("g")
