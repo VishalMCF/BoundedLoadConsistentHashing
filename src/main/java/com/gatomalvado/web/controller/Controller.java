@@ -6,10 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.gatomalvado.common.MapperUtils;
 import com.gatomalvado.consistent.contracts.Member;
@@ -21,6 +18,7 @@ import com.gatomalvado.web.dto.response.ConsistentDTO;
 import com.gatomalvado.web.dto.response.KeyMemberDTO;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class Controller {
 
 //    private Consistent consistent;
