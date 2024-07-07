@@ -2,34 +2,39 @@
 
 ## Request A)
 ```json
-"partitionCount": 360,
-"replicationFactor": 20,
-"members": [
-{
-"name": "Member1"
-},
-{
-"name": "Member2"
-},
-{
-"name": "Member3"
-},
-{
-"name": "Member4"
-},
-{
-"name": "Member5"
-},
-{
-"name": "Member6"
-},
-{
-"name": "Member7"
-},
-{
-"name": "Member8"
+curl --location 'localhost:8080' \
+--header 'Content-Type: application/json' \
+--data '{
+    "partitionCount": 360,
+    "replicationFactor": 20,
+    "members": [
+        {
+            "name": "Member1"
+        },
+        {
+            "name": "Member2"
+        },
+        {
+            "name": "Member3"
+        },
+        {
+            "name": "Member4"
+        },
+        {
+            "name": "Member5"
+        },
+        {
+            "name": "Member6"
+        },
+        {
+            "name": "Member7"
+        },
+        {
+            "name": "Member8"
+        }
+    ]
 }
-]
+'
 ```
 ### Response
 ```json
